@@ -22,7 +22,7 @@ export function claimFund(fundId, callback) {
     })
     .catch((error) => {
       callback(null, error);
-    })
+    });
 }
 
 export function reclaimFund(fundId, investerAddress, callback) {
@@ -34,19 +34,39 @@ export function reclaimFund(fundId, investerAddress, callback) {
     })
     .catch((error) => {
       callback(null, error);
+    });
+}
+
+export function listFunds(callback) {
+  axios.get(`${APP_SERVICE_URL}/fund-list`).then(
+    (result) => {
+      callback(result, null);
     })
+    .catch((error) => {
+      callback(null, error);
+    });
+}
+
+export function getFund(fundId, callback) {
+  axios.get(`${APP_SERVICE_URL}/fund/${fundId}`).then(
+    (result) => {
+      callback(result, null);
+    })
+    .catch((error) => {
+      callback(null, error);
+    });
 }
 
 export function investInFund(investment, callback) {
   axios.put(
-    `${APP_SERVICE_URL}/donation`,
+    `${APP_SERVICE_URL}/investment`,
     investment,
   ).then((result) => {
       callback(result, null);
     })
     .catch((error) => {
       callback(null, error);
-    })
+    });
 }
 
 export function investmentBuilder(fundId, investorAddress, investmentAmount) {
