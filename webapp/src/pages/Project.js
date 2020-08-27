@@ -1,10 +1,24 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Container,
-  Button
+  Button, Form, Col
 } from "react-bootstrap";
+import {useParams, withRouter} from "react-router-dom";
 
-export default function Project(props) {
+function Project(props) {
+  const { projectId } = useParams();
+
+  const [amt, setAmt] = useState("");
+
+  function onSubmit(e) {
+    e.preventDefault();
+    console.log(amt) // use these as fields
+  }
+
+  useEffect(() => {
+    // call api to fetch details
+    // projectId is the projectId
+  }, []);
   return (
     <Container>
       <h1>
@@ -23,6 +37,28 @@ export default function Project(props) {
       <p>
         fjlkasdjflkasdjflsakdfj asjfklasdjflkasdjflaksd falskjflaksjfklasj faljflkajsflkajflkajf ajflkajflkasjkfla fjalkdsjfkajflkasjfl ajflkajflasfaklfjasklf asjflkajfl alkfjal fk
       </p>
+      <Form onSubmit={onSubmit}>
+        <Form.Row className="align-items-center">
+          <Col xs="auto">
+            <Form.Label htmlFor="inlineFormInput" srOnly>
+              Amount
+            </Form.Label>
+            <Form.Control
+              className="mb-2"
+              id="inlineFormInput"
+              placeholder="Amount"
+              onChange={(e) => setAmt(e.target.value)}
+            />
+          </Col>
+          <Col xs="auto">
+            <Button type="submit" className="mb-2">
+              Invest
+            </Button>
+          </Col>
+        </Form.Row>
+      </Form>
     </Container>
   )
 }
+
+export default Project;
