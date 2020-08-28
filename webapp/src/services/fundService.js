@@ -7,7 +7,35 @@ const APP_SERVICE_URL = 'http://localhost:8090/crowdfund'
 
 const CREATOR_ADDRESS = "ZPWLV4EJSXMMFABIBGSM5IDVLDAJRSDS6OYXXFQZOFGLLBFDTWVB6LFUTA"
 
-module.exports.createFund = function (fund, callback) {
+const getFund = function (fundId, callback) {
+  axios.get(`${APP_SERVICE_URL}/fund/${fundId}`).then(
+    (result) => {
+      callback(result.data, null);
+    })
+    .catch((error) => {
+      callback(null, error);
+    });
+}
+
+const getBalance = function(fundId, callback) {
+  getFund(fundId, (fund, error) => {
+    if (fund) {
+      axios.get(`http://localhost:8090/algod/account/${fund.escrow.address}`).then(
+        (result) => {
+          callback(result.data.amount);
+        },
+        (error) => {
+          callback(null, error);
+        }
+      )
+    }
+    else {
+      callback(null, error);
+    }
+  })
+}
+
+const createFund = function (fund, callback) {
   axios.post(`${APP_SERVICE_URL}/fund`, fund, {
     headers: {
       'Content-Type': 'application/json'
@@ -21,7 +49,7 @@ module.exports.createFund = function (fund, callback) {
     });
 }
 
-module.exports.claimFund = function (fundId, callback) {
+const claimFund = function (fundId, callback) {
   axios.post(`${APP_SERVICE_URL}/claim`, {
     fundId: fundId
   }).then((result) => {
@@ -32,7 +60,7 @@ module.exports.claimFund = function (fundId, callback) {
     });
 }
 
-module.exports.reclaimFund = function (fundId, investerAddress, callback) {
+const reclaimFund = function (fundId, investerAddress, callback) {
   axios.post(`${APP_SERVICE_URL}/reclaim`, {
     fundId: fundId,
     investerAddress: investerAddress,
@@ -44,7 +72,7 @@ module.exports.reclaimFund = function (fundId, investerAddress, callback) {
     });
 }
 
-module.exports.listFunds = function (callback) {
+const listFunds = function (callback) {
   axios.get(`${APP_SERVICE_URL}/fund-list`).then(
     (result) => {
       callback(result.data, null);
@@ -54,17 +82,7 @@ module.exports.listFunds = function (callback) {
     });
 }
 
-module.exports.getFund = function (fundId, callback) {
-  axios.get(`${APP_SERVICE_URL}/fund/${fundId}`).then(
-    (result) => {
-      callback(result.data, null);
-    })
-    .catch((error) => {
-      callback(null, error);
-    });
-}
-
-module.exports.investInFund = function (investment, callback) {
+const investInFund = function (investment, callback) {
   axios.post(
     `${APP_SERVICE_URL}/investment`,
     investment,
@@ -76,7 +94,7 @@ module.exports.investInFund = function (investment, callback) {
     });
 }
 
-module.exports.investmentBuilder = function (fundId, investorAddress, investmentAmount) {
+const investmentBuilder = function (fundId, investorAddress, investmentAmount) {
   return {
     fundId: fundId,
     note: '',
@@ -85,7 +103,7 @@ module.exports.investmentBuilder = function (fundId, investorAddress, investment
   }
 }
 
-module.exports.fundBuilder = function (name, description, timelimit, goalAmount, receiverAddress) {
+const fundBuilder = function (name, description, timelimit, goalAmount, receiverAddress) {
   const startDate = Date.now();
   return JSONbig.stringify({
     name: name,
@@ -97,4 +115,16 @@ module.exports.fundBuilder = function (name, description, timelimit, goalAmount,
     receiverAddress: receiverAddress,
     creatorAddress: CREATOR_ADDRESS,
   });
+}
+
+module.exports = {
+  getFund,
+  getBalance,
+  createFund,
+  claimFund,
+  reclaimFund,
+  listFunds,
+  investInFund,
+  investmentBuilder,
+  fundBuilder,
 }
