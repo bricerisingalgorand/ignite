@@ -50,7 +50,7 @@ const createFund = function (fund, callback) {
 }
 
 const claimFund = function (fundId, callback) {
-  axios.post(`${APP_SERVICE_URL}/claim`, {
+  axios.put(`${APP_SERVICE_URL}/claim`, {
     fundId: fundId
   }).then((result) => {
       callback(result.data, null);
@@ -61,7 +61,7 @@ const claimFund = function (fundId, callback) {
 }
 
 const reclaimFund = function (fundId, investerAddress, callback) {
-  axios.post(`${APP_SERVICE_URL}/reclaim`, {
+  axios.put(`${APP_SERVICE_URL}/reclaim`, {
     fundId: fundId,
     investerAddress: investerAddress,
   }).then((result) => {
