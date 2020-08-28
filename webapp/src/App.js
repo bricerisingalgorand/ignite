@@ -22,7 +22,7 @@ import Projects from './pages/Projects'
 import Project from './pages/Project'
 import Register from './pages/Register'
 
-function App() {
+function App(props) {
   return (
     <Router>
       <Navbar bg="light" expand="lg">
@@ -46,13 +46,10 @@ function App() {
         <Route path="/projects">
           <Projects />
         </Route>
-        <Route path="/project">
-          <Project />
-        </Route>
         <Route path="/register">
           <Register />
         </Route>
-        <Route path="/project/:projectId">
+        <Route exact path="/project/:projectId">
           <Project />
         </Route>
       </Switch>
