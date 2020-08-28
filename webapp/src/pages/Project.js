@@ -25,6 +25,10 @@ function Project(props) {
     fundService.investInFund(investment, () => {})
   }
 
+  function handleClaim() {
+    // code to claim
+  }
+
   useEffect(() => {
     // call api to fetch details
     // projectId is the projectId
@@ -45,7 +49,7 @@ function Project(props) {
 
   return (
     <Container>
-      <h1>
+      <h1 className="pt-2">
         {name}
       </h1>
       <div className="d-flex flex-row">
@@ -56,6 +60,11 @@ function Project(props) {
         <div className="m-3">
           <p>Balance</p>
           <p>{`${bal} Algos`}</p>
+        </div>
+        <div className="m-3">
+          <Button style={{marginTop: '2rem'}} onClick={handleClaim}>
+            Claim
+          </Button>
         </div>
       </div>
       <p>

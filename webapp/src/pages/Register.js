@@ -22,7 +22,7 @@ export default function About(props) {
 
   return (
     <Container>
-      <h1>
+      <h1 className="pt-2">
         Register
       </h1>
       <Form onSubmit={onSubmit}>
