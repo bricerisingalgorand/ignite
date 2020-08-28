@@ -1,11 +1,11 @@
 const axios = require('axios')
 var JSONbig = require('json-bigint');
 
-APP_SERVICE_URL = 'http://localhost:8090/crowdfund'
+const APP_SERVICE_URL = 'http://localhost:8090/crowdfund'
 //axios.defaults.headers.common['Accept'] = 'application/json'
 //axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-CREATOR_ADDRESS = "ZPWLV4EJSXMMFABIBGSM5IDVLDAJRSDS6OYXXFQZOFGLLBFDTWVB6LFUTA"
+const CREATOR_ADDRESS = "ZPWLV4EJSXMMFABIBGSM5IDVLDAJRSDS6OYXXFQZOFGLLBFDTWVB6LFUTA"
 
 module.exports.createFund = function (fund, callback) {
   axios.post(`${APP_SERVICE_URL}/fund`, fund, {
@@ -86,7 +86,7 @@ module.exports.investmentBuilder = function (fundId, investorAddress, investment
 }
 
 module.exports.fundBuilder = function (name, description, timelimit, goalAmount, receiverAddress) {
-  startDate = Date.now();
+  const startDate = Date.now();
   return JSONbig.stringify({
     name: name,
     description: description,

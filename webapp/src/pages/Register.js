@@ -3,6 +3,7 @@ import {
   Container, Col,
   Button, FormControl, Form
 } from "react-bootstrap";
+const fundService = require('../services/fundService.js')
 
 export default function About(props) {
   const [name, setName] = useState("");
@@ -15,6 +16,8 @@ export default function About(props) {
   function onSubmit(e) {
     e.preventDefault();
     console.log(name, desc, goal, acct, time) // use these as fields
+    const fund = fundService.fundBuilder(name, desc, parseInt(time), parseInt(goal), acct);
+    fundService.createFund(fund, ()=>{});
   }
 
   return (
