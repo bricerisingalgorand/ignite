@@ -21,17 +21,17 @@ export default function About(props) {
         </thead>
         <tbody>
         <tr>
-          <td>Project 1</td>
+          <td><a href={"/project/1"}>Project 1</a></td>
           <td>134123412 usd</td>
           <td>123123123 usd</td>
         </tr>
         <tr>
-          <td>Project 2</td>
+          <td><a href={"/project/2"}>Project 2</a></td>
           <td>134123412 usd</td>
           <td>123123123 usd</td>
         </tr>
         <tr>
-          <td>Project 3</td>
+          <td><a href={"/project/3"}>Project 3</a></td>
           <td>134123412 usd</td>
           <td>123123123 usd</td>
         </tr>
