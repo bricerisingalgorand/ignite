@@ -1,91 +1,100 @@
 const axios = require('axios')
+var JSONbig = require('json-bigint');
 
-APP_SERVICE_URL = 'http://app-service-toronto-hackathon-1811157952.us-east-2.elb.amazonaws.com'
-axios.defaults.headers.common['Accept'] = 'application/json'
-axios.defaults.headers.common['Accept'] = 'Content-Type'
+APP_SERVICE_URL = 'http://localhost:8090/crowdfund'
+//axios.defaults.headers.common['Accept'] = 'application/json'
+//axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-export function createFund(fund, callback) {
-  axios.post(`${APP_SERVICE_URL}/fund`, fund)
-        .then((result) => {
-            callback(result, null);
-        })
-        .catch((error) => {
-          callback(null, error);
-        });
-}
+CREATOR_ADDRESS = "ZPWLV4EJSXMMFABIBGSM5IDVLDAJRSDS6OYXXFQZOFGLLBFDTWVB6LFUTA"
 
-export function claimFund(fundId, callback) {
-  axios.put(`${APP_SERVICE_URL}/claim-fund`, {
-    fundId: fundId
-  }).then((result) => {
-      callback(result, null);
+module.exports.createFund = function (fund, callback) {
+  axios.post(`${APP_SERVICE_URL}/fund`, fund, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then((result) => {
+      callback(result.data, null);
     })
     .catch((error) => {
       callback(null, error);
     });
 }
 
-export function reclaimFund(fundId, investerAddress, callback) {
-  axios.put(`${APP_SERVICE_URL}/reclaim-fund`, {
+module.exports.claimFund = function (fundId, callback) {
+  axios.post(`${APP_SERVICE_URL}/claim`, {
+    fundId: fundId
+  }).then((result) => {
+      callback(result.data, null);
+    })
+    .catch((error) => {
+      callback(null, error);
+    });
+}
+
+module.exports.reclaimFund = function (fundId, investerAddress, callback) {
+  axios.post(`${APP_SERVICE_URL}/reclaim`, {
     fundId: fundId,
     investerAddress: investerAddress,
   }).then((result) => {
-      callback(result, null);
+      callback(result.data, null);
     })
     .catch((error) => {
       callback(null, error);
     });
 }
 
-export function listFunds(callback) {
+module.exports.listFunds = function (callback) {
   axios.get(`${APP_SERVICE_URL}/fund-list`).then(
     (result) => {
-      callback(result, null);
+      callback(result.data, null);
     })
     .catch((error) => {
       callback(null, error);
     });
 }
 
-export function getFund(fundId, callback) {
+module.exports.getFund = function (fundId, callback) {
   axios.get(`${APP_SERVICE_URL}/fund/${fundId}`).then(
     (result) => {
-      callback(result, null);
+      callback(result.data, null);
     })
     .catch((error) => {
       callback(null, error);
     });
 }
 
-export function investInFund(investment, callback) {
-  axios.put(
+module.exports.investInFund = function (investment, callback) {
+  axios.post(
     `${APP_SERVICE_URL}/investment`,
     investment,
   ).then((result) => {
-      callback(result, null);
+      callback(result.data, null);
     })
     .catch((error) => {
       callback(null, error);
     });
 }
 
-export function investmentBuilder(fundId, investorAddress, investmentAmount) {
+module.exports.investmentBuilder = function (fundId, investorAddress, investmentAmount) {
   return {
     fundId: fundId,
+    note: '',
     investorAddress: investorAddress,
     investmentAmount: investmentAmount,
   }
 }
 
-export function fundBuilder(name, description, timelimit, goalAmount, receiverAddress) {
+module.exports.fundBuilder = function (name, description, timelimit, goalAmount, receiverAddress) {
   startDate = Date.now();
-  return {
+  return JSONbig.stringify({
     name: name,
     description: description,
-    startDate: startDate,
-    endDate: startDate + timelimit,
-    closeoutDate: (startDate + timelimit).setFullYear(startDate.getFullYear() + 1),
+    startDate: new Date(startDate).toISOString(),
+    endDate: new Date(startDate + timelimit).toISOString(),
+    closeOutDate: new Date(startDate + timelimit + 1000000).toISOString(),
     goalAmount: goalAmount,
     receiverAddress: receiverAddress,
-  };
+    creatorAddress: CREATOR_ADDRESS,
+  });
 }
