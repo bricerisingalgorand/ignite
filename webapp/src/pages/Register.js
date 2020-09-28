@@ -43,7 +43,7 @@ export default function About(props) {
           <Form.Group as={Col} controlId="cur">
             <Form.Label>Currency</Form.Label>
             <Form.Control as="select" defaultValue="Currency" onChange={(e) => setCurr(e.target.value)}>
-              <option>USD</option>
+              <option>Algo</option>
             </Form.Control>
           </Form.Group>
         </Form.Row>

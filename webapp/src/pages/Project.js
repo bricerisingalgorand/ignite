@@ -27,6 +27,16 @@ function Project(props) {
 
   function handleClaim() {
     // code to claim
+    if (parseInt(goal) <= parseInt(bal)) {
+      console.log(`Claiming ${projectId}`)
+      fundService.claimFund(projectId, (data, err) => {
+        console.log(data)
+        console.log(`Claiming ${projectId} complete`)
+        fundService.getBalance(projectId, (data, err) => {
+          setBal(data)
+        })
+      })
+    }
   }
 
   useEffect(() => {
@@ -36,14 +46,18 @@ function Project(props) {
       if (err) {
         console.log(err)
       } else {
+        console.log(data)
+        if (data.state != "FUNDS_RECEIVED") {
+          fundService.getBalance(projectId, (data, err) => {
+            setBal(data)
+          })
+        } else {
+          setBal("COMPLETED")
+        }
         setName(data.name)
         setDesc(data.description)
         setGoal(data.goalAmount)
       }
-    })
-
-    fundService.getBalance(projectId, (data, err) => {
-      setBal(data)
     })
   }, []);
 

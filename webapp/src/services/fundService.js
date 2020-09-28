@@ -5,7 +5,7 @@ const APP_SERVICE_URL = 'http://localhost:8090/crowdfund'
 //axios.defaults.headers.common['Accept'] = 'application/json'
 //axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-const CREATOR_ADDRESS = "ZPWLV4EJSXMMFABIBGSM5IDVLDAJRSDS6OYXXFQZOFGLLBFDTWVB6LFUTA"
+const CREATOR_ADDRESS = "TB6RLTKS2ZOJDM53253MXFLBOLHAB35EKVFGNBPACLHKOWGV7L3GTLY43A"
 
 const getFund = function (fundId, callback) {
   axios.get(`${APP_SERVICE_URL}/fund/${fundId}`).then(
